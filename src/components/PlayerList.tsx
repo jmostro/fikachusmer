@@ -14,6 +14,7 @@ interface Player {
 }
 
 export default function PlayerList() {
+	const PLAYER_UPDATE_INTERVAL = Number(process.env.PLAYER_UPDATE_INTERVAL) || 10000;
 	const [players, setPlayers] = useState<Player[]>([]);
 	const [previousPlayers, setPreviousPlayers] = useState<Player[]>([]);
 
@@ -25,7 +26,7 @@ export default function PlayerList() {
 		};
 
 		fetchPlayers();
-		const interval = setInterval(fetchPlayers, 10000);
+		const interval = setInterval(fetchPlayers, PLAYER_UPDATE_INTERVAL);
 
 		return () => clearInterval(interval);
 	}, []);

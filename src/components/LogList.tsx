@@ -9,6 +9,9 @@ interface Log {
 }
 
 export default function LogList() {
+	const LOG_UPDATE_INTERVAL = Number(process.env.LOG_UPDATE_INTERVAL) || 30000;
+	const LOGS_PER_PAGE = Number(process.env.LOGS_PER_PAGE) || 10;
+
 	const [logs, setLogs] = useState<Log[]>([]);
 
 	useEffect(() => {
@@ -16,11 +19,11 @@ export default function LogList() {
 			fetch("/api/log")
 				.then((res) => res.json())
 				.then((data) => {
-					setLogs(data.slice(0, 10));
+					setLogs(data.slice(0, LOGS_PER_PAGE));
 				});
 		};
 		fetchLogs();
-		const interval = setInterval(fetchLogs, 30000);
+		const interval = setInterval(fetchLogs, LOG_UPDATE_INTERVAL);
 		return () => clearInterval(interval);
 	}, []);
 
